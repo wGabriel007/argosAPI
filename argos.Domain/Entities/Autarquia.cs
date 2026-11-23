@@ -7,21 +7,21 @@ public class Autarquia : EntidadeBaseCadastro
     /// <summary>
     /// Propriedade que representa Cnpj
     /// </summary>
-    public string Cnpj {  get; set; }
+    public string Cnpj {  get; set; } = string.Empty;
     /// <summary>
     /// Propriedade que representa Nome Fantasia 
     /// </summary>
-    public string NomeFantasia { get; set; }
+    public string NomeFantasia { get; set; } = string.Empty;
     /// <summary>
     /// Propriedade que representa Razão Social
     /// </summary>
-    public string RazaoSocial { get; set; }
+    public string RazaoSocial { get; set; } = string.Empty;
     /// <summary>
     /// Propriedade que representa Telefone
     /// </summary>
-    public string Telefone {  get; set; }
+    public string? Telefone {  get; set; }
     /// <summary>
     /// Propriedade que representa Email
     /// </summary>
-    public string Email { get; set; }
+    public string? Email { get; set; }
 }

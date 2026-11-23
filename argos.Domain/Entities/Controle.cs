@@ -15,7 +15,7 @@ public class Controle : EntidadeBaseCadastro
     /// <summary>
     /// Propriedade que representa o processo Sei
     /// </summary>
-    public int Sei { get; set; }
+    public string Sei { get; set; } = string.Empty;
     /// <summary>
     /// Propriedade que representa da data de início
     /// </summary>

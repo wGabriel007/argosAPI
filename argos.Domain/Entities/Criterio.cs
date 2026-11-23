@@ -7,7 +7,7 @@ public class Criterio : EntidadeBaseCadastro
     /// <summary>
     /// Propriedade que representa Nome
     /// </summary>
-    public string Nome {  get; set; }
+    public string Nome {  get; set; } = string.Empty;
     /// <summary>
     /// Propriedade que representa Tipo
     /// </summary>
