@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="argos.application/argos.application.csproj" DisplayName="argos.Application" Id="789876eb-3a71-4652-b734-dbc02e103e2c" />
+  <Project Path="argos.Domain/argos.Domain.csproj" Id="b6cf7c4d-f481-4a20-993c-26e9133f26d1" />
+  <Project Path="argos.Infra/argos.Infra.csproj" Id="06dbef3b-bbe1-4bb2-942d-e41969d2ad4f" />
+  <Project Path="argosAPI/argosAPI.csproj" />
+</Solution>
