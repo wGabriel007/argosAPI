@@ -16,8 +16,14 @@ public class Usuario : EntidadeBaseCadastro
     /// Propriedade que representa o Perfil
     /// </summary>
     public int Perfil {  get; set; }
+
     /// <summary>
-    /// Propriedade que representa a Senha
+    /// 1 = ativo; 0 = inativo.
     /// </summary>
-    public string Senha { get; set; } = string.Empty;
+    public int Status { get; set; } = 1;
+
+    /// <summary>
+    /// Propriedade que representa a Senha.
+    /// </summary>
+    public string SenhaHash { get; set; } = string.Empty;
 }

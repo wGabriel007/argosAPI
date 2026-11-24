@@ -2,17 +2,27 @@
 /// <summary>
 /// Entidade que representa a tabela auxiliar
 /// </summary>
-public class AutarquiaCriterio : EntidadeBase
+public class AutarquiaCriterio : EntidadeBaseCadastro
 {
     /// <summary>
     /// Propriedade que representa a referência da Autarquia
     /// </summary>
-    public int AutarquiaId { get; set; }
+    public Guid AutarquiaId { get; set; }
     /// <summary>
     /// Propriedade que representa a referência do Critério
     /// </summary>
-    public int CriterioId { get; set; }
+    public Guid CriterioId { get; set; }
 
-    public Autarquia? Autarquia { get; set; }
-    public Criterio? Criterio { get; set; }
+    /// <summary>
+    /// Responsável técnico pelo acompanhamento do vínculo.
+    /// </summary>
+    public string Responsavel { get; set; } = string.Empty;
+
+    #region
+    public Autarquia Autarquia { get; set; } = null!;
+    public Criterio Criterio { get; set; } = null!;
+
+    public Controle? Controle { get; set; }
+
+    #endregion
 }

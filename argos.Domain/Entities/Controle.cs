@@ -7,11 +7,10 @@ public class Controle : EntidadeBaseCadastro
     /// <summary>
     /// Propriedade que representa a referência da Autarquia
     /// </summary>
-    public int AutarquiaId { get; set; }
     /// <summary>
-    /// Propriedade que representa a referência do Usuario
+    /// Associação à qual esta etapa pertence.
     /// </summary>
-    public int UsuarioId { get; set; }
+    public Guid AssociacaoId { get; set; }
     /// <summary>
     /// Propriedade que representa o processo Sei
     /// </summary>
@@ -19,13 +18,15 @@ public class Controle : EntidadeBaseCadastro
     /// <summary>
     /// Propriedade que representa da data de início
     /// </summary>
-    public DateTime DataInicio { get; set; }
+    public DateOnly DataInicio { get; set; }
     /// <summary>
     /// Propriedade que representa a data prevista
     /// </summary>
-    public DateTime DataPrevista { get; set; }
+    public DateOnly DataPrevista { get; set; }
     /// <summary>
     /// Propriedade que representa a data final
     /// </summary>
-    public DateTime DataFinal { get; set; }
+    public DateOnly? DataFinal { get; set; }
+
+    public AutarquiaCriterio Associacao { get; set; } = null!;
 }

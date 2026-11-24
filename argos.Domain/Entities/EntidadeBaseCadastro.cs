@@ -8,10 +8,10 @@
         /// <summary>
         /// Propriedade que representa Data de cadastro
         /// </summary>
-        public DateTime DataCadastro { get; set; }
+        public DateTime DataCadastro { get; set; } = DateTime.UtcNow;
         /// <summary>
         /// Propriedade que representa Data de atualização
         /// </summary>
-        public DateTime DataAtualizacao { get; set; }
+        public DateTime DataAtualizacao { get; set; } = DateTime.UtcNow;
     }
 }
