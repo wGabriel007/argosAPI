@@ -96,9 +96,10 @@ public class ArgosDbContext : DbContext
         {
             entity.ToTable("tb_controle");
             entity.HasKey(x => x.Id);
-            entity.HasIndex(x => x.AssociacaoId).IsUnique();
+            entity.HasIndex(x => x.AutarquiaId).IsUnique();
             entity.Property(x => x.Id).HasColumnName("iId").ValueGeneratedOnAdd();
-            entity.Property(x => x.AssociacaoId).HasColumnName("iAssociacaoId");
+            entity.Property(x => x.AutarquiaId).HasColumnName("iAutarquiaId");
+            entity.Property(x => x.UsuarioId).HasColumnName("iUsuarioId");
             entity.Property(x => x.Sei).HasColumnName("sSei").IsRequired().HasMaxLength(25);
             entity.Property(x => x.DataInicio).HasColumnName("dtDataInicio");
             entity.Property(x => x.DataPrevista).HasColumnName("dtDataFinalPrevista");
@@ -106,10 +107,15 @@ public class ArgosDbContext : DbContext
             entity.Property(x => x.DataCadastro).HasColumnName("dtDataCadastro");
             entity.Property(x => x.DataAtualizacao).HasColumnName("dtDataAtualizacao");
 
-            entity.HasOne(x => x.Associacao)
-                .WithOne(x => x.Controle)
-                .HasForeignKey<Controle>(x => x.AssociacaoId)
-                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(x => x.Autarquia)
+                .WithMany()
+                .HasForeignKey(x => x.AutarquiaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(x => x.Usuario)
+                .WithMany()
+                .HasForeignKey(x => x.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

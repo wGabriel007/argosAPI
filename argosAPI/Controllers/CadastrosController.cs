@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using argos.Domain.Entities;
 using argos.Domain.Enums;
 using argosAPI.Helpers;
@@ -88,8 +89,12 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
     public async Task<IActionResult> CreateStage(EtapaRequest request, CancellationToken ct)
     {
         var result = await ValidateStage(request, ct); if (result.Error is not null) return result.Error;
-        if (await db.Controles.AnyAsync(x => x.AssociacaoId == request.AssociationId, ct)) return Conflict(new ErrorResponse("A associação já possui uma etapa."));
-        var entity = ToStage(request); db.Controles.Add(entity); await db.SaveChangesAsync(ct); return Created($"/etapas/{entity.Id}", Stage(entity));
+        var association = await db.AutarquiaCriterios.AsNoTracking().SingleAsync(x => x.Id == request.AssociationId, ct);
+        var userId = CurrentUserId();
+        if (userId is null) return Unauthorized(new ErrorResponse("Usuário autenticado inválido."));
+        if (await db.Controles.AnyAsync(x => x.AutarquiaId == association.AutarquiaId, ct)) return Conflict(new ErrorResponse("A autarquia já possui uma etapa."));
+        var entity = ToStage(request, association.AutarquiaId, userId.Value);
+        db.Controles.Add(entity); await db.SaveChangesAsync(ct); return Created($"/etapas/{entity.Id}", Stage(entity, request.AssociationId));
     }
 
     [HttpPut("etapas/{id:int}")]
@@ -98,9 +103,12 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
         if (id != request.Id) return BadRequest(new ErrorResponse("O id da URL deve ser igual ao id do corpo."));
         var result = await ValidateStage(request, ct); if (result.Error is not null) return result.Error;
         var entity = await db.Controles.FindAsync([id], ct); if (entity is null) return NotFound(new ErrorResponse("Etapa não encontrada."));
-        if (await db.Controles.AnyAsync(x => x.Id != id && x.AssociacaoId == request.AssociationId, ct)) return Conflict(new ErrorResponse("A associação já possui uma etapa."));
-        entity.AssociacaoId = request.AssociationId; entity.Sei = request.Process; entity.DataInicio = result.Start; entity.DataPrevista = result.Due; entity.DataFinal = result.Completed; entity.DataAtualizacao = DateTime.UtcNow;
-        await db.SaveChangesAsync(ct); return Ok(Stage(entity));
+        var association = await db.AutarquiaCriterios.AsNoTracking().SingleAsync(x => x.Id == request.AssociationId, ct);
+        var userId = CurrentUserId();
+        if (userId is null) return Unauthorized(new ErrorResponse("Usuário autenticado inválido."));
+        if (await db.Controles.AnyAsync(x => x.Id != id && x.AutarquiaId == association.AutarquiaId, ct)) return Conflict(new ErrorResponse("A autarquia já possui uma etapa."));
+        entity.AutarquiaId = association.AutarquiaId; entity.UsuarioId = userId.Value; entity.Sei = request.Process; entity.DataInicio = result.Start; entity.DataPrevista = result.Due; entity.DataFinal = result.Completed; entity.DataAtualizacao = DateTime.UtcNow;
+        await db.SaveChangesAsync(ct); return Ok(Stage(entity, request.AssociationId));
     }
 
     private async Task<(IActionResult? Error, DateOnly Start, DateOnly Due, DateOnly? Completed)> ValidateStage(EtapaRequest request, CancellationToken ct)
@@ -112,10 +120,12 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
         DateOnly? final = string.IsNullOrWhiteSpace(request.Completed) ? null : DateOnly.Parse(request.Completed);
         return (null, start, due, final);
     }
-
-    private static Controle ToStage(EtapaRequest x) => new() { AssociacaoId = x.AssociationId, Sei = x.Process, DataInicio = DateOnly.Parse(x.Start), DataPrevista = DateOnly.Parse(x.Due), DataFinal = string.IsNullOrWhiteSpace(x.Completed) ? null : DateOnly.Parse(x.Completed) };
-    private static object Agency(Autarquia x) => new { id = x.Id, name = x.NomeFantasia, legalName = x.RazaoSocial, cnpj = x.Cnpj, email = x.Email, phone = x.Telefone, status = x.Status.ToString() };
-    private static object Criterion(Criterio x) => new { id = x.Id, name = x.Nome, type = x.Tipo.ToString(), responsible = x.Responsavel, status = x.Status.ToString() };
+    #region
+    private int? CurrentUserId() => int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var id) ? id : null;
+    private static Controle ToStage(EtapaRequest x, int autarquiaId, int usuarioId) => new() { AutarquiaId = autarquiaId, UsuarioId = usuarioId, Sei = x.Process, DataInicio = DateOnly.Parse(x.Start), DataPrevista = DateOnly.Parse(x.Due), DataFinal = string.IsNullOrWhiteSpace(x.Completed) ? null : DateOnly.Parse(x.Completed) };
+    private static object Agency(Autarquia x)              => new { id = x.Id, name = x.NomeFantasia, legalName = x.RazaoSocial, cnpj = x.Cnpj, email = x.Email, phone = x.Telefone, status = x.Status.ToString() };
+    private static object Criterion(Criterio x)            => new { id = x.Id, name = x.Nome, type = x.Tipo.ToString(), responsible = x.Responsavel, status = x.Status.ToString() };
     private static object Association(AutarquiaCriterio x) => new { id = x.Id, agencyId = x.AutarquiaId, criterionId = x.CriterioId, responsible = x.Responsavel };
-    private static object Stage(Controle x) => new { id = x.Id, associationId = x.AssociacaoId, process = x.Sei, start = x.DataInicio.ToString("yyyy-MM-dd"), due = x.DataPrevista.ToString("yyyy-MM-dd"), completed = x.DataFinal?.ToString("yyyy-MM-dd") ?? string.Empty };
+    private static object Stage(Controle x, int associationId) => new { id = x.Id, associationId, process = x.Sei, start = x.DataInicio.ToString("yyyy-MM-dd"), due = x.DataPrevista.ToString("yyyy-MM-dd"), completed = x.DataFinal?.ToString("yyyy-MM-dd") ?? string.Empty };
+    #endregion
 }

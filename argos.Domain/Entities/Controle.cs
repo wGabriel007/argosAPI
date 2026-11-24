@@ -4,13 +4,11 @@
 /// </summary>
 public class Controle : EntidadeBaseCadastro
 {
-    /// <summary>
-    /// Propriedade que representa a referência da Autarquia
-    /// </summary>
-    /// <summary>
-    /// Associação à qual esta etapa pertence.
-    /// </summary>
-    public int AssociacaoId { get; set; }
+    /// <summary>Autarquia responsável pelo controle.</summary>
+    public int AutarquiaId { get; set; }
+
+    /// <summary>Usuário responsável pelo controle.</summary>
+    public int UsuarioId { get; set; }
     /// <summary>
     /// Propriedade que representa o processo Sei
     /// </summary>
@@ -28,5 +26,6 @@ public class Controle : EntidadeBaseCadastro
     /// </summary>
     public DateOnly? DataFinal { get; set; }
 
-    public AutarquiaCriterio Associacao { get; set; } = null!;
+    public Autarquia Autarquia { get; set; } = null!;
+    public Usuario Usuario { get; set; } = null!;
 }

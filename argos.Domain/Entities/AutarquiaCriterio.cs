@@ -20,7 +20,7 @@ public class AutarquiaCriterio : EntidadeBaseCadastro
 
     #region
     public Autarquia Autarquia { get; set; } = null!;
-    public Criterio Criterio { get; set; } = null!;
+    public Criterio Criterio { get; set; }   = null!;
 
     public Controle? Controle { get; set; }
 

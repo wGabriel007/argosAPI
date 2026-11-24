@@ -50,7 +50,13 @@ public sealed class MonitoramentoController(ArgosDbContext db) : ControllerBase
             stages = stages.Select(x => new
             {
                 id = x.Id,
-                associationId = x.AssociacaoId,
+                // A tabela de controle guarda AutarquiaId, não AssociationId.
+                // Quando há uma única associação para a autarquia, conseguimos
+                // reconstruir o vínculo para manter compatibilidade com o frontend.
+                associationId = associations
+                    .Where(a => a.AutarquiaId == x.AutarquiaId)
+                    .Select(a => (int?)a.Id)
+                    .FirstOrDefault() ?? 0,
                 process = x.Sei,
                 start = x.DataInicio.ToString("yyyy-MM-dd"),
                 due = x.DataPrevista.ToString("yyyy-MM-dd"),
