@@ -7,5 +7,5 @@ public abstract class EntidadeBase
     /// <summary>
     /// Propriedade que representa o identificador unico
     /// </summary>
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public int Id { get; set; }
 }

@@ -10,7 +10,7 @@ public class Controle : EntidadeBaseCadastro
     /// <summary>
     /// Associação à qual esta etapa pertence.
     /// </summary>
-    public Guid AssociacaoId { get; set; }
+    public int AssociacaoId { get; set; }
     /// <summary>
     /// Propriedade que representa o processo Sei
     /// </summary>

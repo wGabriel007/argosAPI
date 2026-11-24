@@ -5,7 +5,7 @@ namespace argosAPI.Models;
 /// <summary>Dados recebidos para criar ou atualizar uma autarquia.</summary>
 public sealed class AutarquiaRequest
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     [Required] public string Name { get; set; } = string.Empty;
     [Required] public string LegalName { get; set; } = string.Empty;
     [Required] public string Cnpj { get; set; } = string.Empty;
@@ -17,7 +17,7 @@ public sealed class AutarquiaRequest
 /// <summary>Dados recebidos para criar ou atualizar um critério.</summary>
 public sealed class CriterioRequest
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     [Required] public string Name { get; set; } = string.Empty;
     [Required] public string Type { get; set; } = string.Empty;
     [Required] public string Responsible { get; set; } = string.Empty;
@@ -27,17 +27,17 @@ public sealed class CriterioRequest
 /// <summary>Dados recebidos para criar uma associação.</summary>
 public sealed class AssociacaoRequest
 {
-    public Guid Id { get; set; }
-    public Guid AgencyId { get; set; }
-    public Guid CriterionId { get; set; }
+    public int Id { get; set; }
+    public int AgencyId { get; set; }
+    public int CriterionId { get; set; }
     [Required] public string Responsible { get; set; } = string.Empty;
 }
 
 /// <summary>Dados de uma etapa. Completed vazio significa não concluída.</summary>
 public sealed class EtapaRequest
 {
-    public Guid Id { get; set; }
-    public Guid AssociationId { get; set; }
+    public int Id { get; set; }
+    public int AssociationId { get; set; }
     [Required] public string Process { get; set; } = string.Empty;
     [Required] public string Start { get; set; } = string.Empty;
     [Required] public string Due { get; set; } = string.Empty;

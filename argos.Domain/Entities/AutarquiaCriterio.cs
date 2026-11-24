@@ -7,11 +7,11 @@ public class AutarquiaCriterio : EntidadeBaseCadastro
     /// <summary>
     /// Propriedade que representa a referência da Autarquia
     /// </summary>
-    public Guid AutarquiaId { get; set; }
+    public int AutarquiaId { get; set; }
     /// <summary>
     /// Propriedade que representa a referência do Critério
     /// </summary>
-    public Guid CriterioId { get; set; }
+    public int CriterioId { get; set; }
 
     /// <summary>
     /// Responsável técnico pelo acompanhamento do vínculo.
