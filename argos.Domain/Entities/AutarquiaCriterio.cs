@@ -22,7 +22,5 @@ public class AutarquiaCriterio : EntidadeBaseCadastro
     public Autarquia Autarquia { get; set; } = null!;
     public Criterio Criterio { get; set; }   = null!;
 
-    public Controle? Controle { get; set; }
-
     #endregion
 }
