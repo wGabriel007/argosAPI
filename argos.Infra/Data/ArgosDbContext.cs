@@ -7,11 +7,11 @@ public class ArgosDbContext : DbContext
 {
     public ArgosDbContext(DbContextOptions<ArgosDbContext> options) : base(options) { }
 
-    public DbSet<Autarquia> Autarquias => Set<Autarquia>();
-    public DbSet<Criterio> Criterios => Set<Criterio>();
-    public DbSet<Usuario> Usuarios => Set<Usuario>();
+    public DbSet<Autarquia> Autarquias                 => Set<Autarquia>();
+    public DbSet<Criterio> Criterios                   => Set<Criterio>();
+    public DbSet<Usuario> Usuarios                     => Set<Usuario>();
     public DbSet<AutarquiaCriterio> AutarquiaCriterios => Set<AutarquiaCriterio>();
-    public DbSet<Controle> Controles => Set<Controle>();
+    public DbSet<Controle> Controles                   => Set<Controle>();
 
     /// <summary>
     /// Centraliza nomes de tabelas, índices e relacionamentos para que o modelo
@@ -24,7 +24,7 @@ public class ArgosDbContext : DbContext
         modelBuilder.Entity<Autarquia>(entity =>
         {
             entity.ToTable("tb_autarquia");
-            entity.HasKey(x => x.Id);
+            entity.HasKey(x   => x.Id);
             entity.HasIndex(x => x.Cnpj).IsUnique();
             entity.Property(x => x.Id).HasColumnName("iId").ValueGeneratedOnAdd();
             entity.Property(x => x.Cnpj).HasColumnName("sCnpj").IsRequired().HasMaxLength(18);
@@ -40,7 +40,7 @@ public class ArgosDbContext : DbContext
         modelBuilder.Entity<Criterio>(entity =>
         {
             entity.ToTable("tb_criterio");
-            entity.HasKey(x => x.Id);
+            entity.HasKey(x   => x.Id);
             entity.Property(x => x.Id).HasColumnName("iId").ValueGeneratedOnAdd();
             entity.Property(x => x.Nome).HasColumnName("sNome").IsRequired().HasMaxLength(150);
             entity.Property(x => x.Tipo).HasColumnName("iTipo");
@@ -53,7 +53,7 @@ public class ArgosDbContext : DbContext
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.ToTable("tb_usuario");
-            entity.HasKey(x => x.Id);
+            entity.HasKey(x   => x.Id);
             entity.HasIndex(x => x.Email).IsUnique();
             entity.Property(x => x.Id).HasColumnName("iId").ValueGeneratedOnAdd();
             entity.Property(x => x.Nome).HasColumnName("sNome").IsRequired().HasMaxLength(150);
@@ -68,7 +68,7 @@ public class ArgosDbContext : DbContext
         modelBuilder.Entity<AutarquiaCriterio>(entity =>
         {
             entity.ToTable("tb_autarquia_criterio");
-            entity.HasKey(x => x.Id);
+            entity.HasKey(x   => x.Id);
             entity.HasIndex(x => new { x.AutarquiaId, x.CriterioId }).IsUnique();
             entity.Property(x => x.Id).HasColumnName("iId").ValueGeneratedOnAdd();
             entity.Property(x => x.AutarquiaId).HasColumnName("iAutarquiaId");
@@ -81,13 +81,13 @@ public class ArgosDbContext : DbContext
             entity.Ignore(x => x.DataCadastro);
             entity.Ignore(x => x.DataAtualizacao);
 
-            entity.HasOne(x => x.Autarquia)
-                .WithMany(x => x.Associacoes)
+            entity.HasOne(x      => x.Autarquia)
+                .WithMany(x      => x.Associacoes)
                 .HasForeignKey(x => x.AutarquiaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(x => x.Criterio)
-                .WithMany(x => x.Associacoes)
+            entity.HasOne(x      => x.Criterio)
+                .WithMany(x      => x.Associacoes)
                 .HasForeignKey(x => x.CriterioId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
@@ -95,9 +95,9 @@ public class ArgosDbContext : DbContext
         modelBuilder.Entity<Controle>(entity =>
         {
             entity.ToTable("tb_controle");
-            entity.HasKey(x => x.Id);
-            entity.HasIndex(x => x.AutarquiaId).IsUnique();
+            entity.HasKey(x   => x.Id);
             entity.Property(x => x.Id).HasColumnName("iId").ValueGeneratedOnAdd();
+            entity.HasIndex(x => x.AutarquiaId).IsUnique();
             entity.Property(x => x.AutarquiaId).HasColumnName("iAutarquiaId");
             entity.Property(x => x.UsuarioId).HasColumnName("iUsuarioId");
             entity.Property(x => x.Sei).HasColumnName("sSei").IsRequired().HasMaxLength(25);
@@ -107,14 +107,14 @@ public class ArgosDbContext : DbContext
             entity.Property(x => x.DataCadastro).HasColumnName("dtDataCadastro");
             entity.Property(x => x.DataAtualizacao).HasColumnName("dtDataAtualizacao");
 
-            entity.HasOne(x => x.Autarquia)
+            entity.HasOne(x              => x.Autarquia)
                 .WithMany()
-                .HasForeignKey(x => x.AutarquiaId)
+                .HasForeignKey(x         => x.AutarquiaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(x => x.Usuario)
+            entity.HasOne(x              => x.Usuario)
                 .WithMany()
-                .HasForeignKey(x => x.UsuarioId)
+                .HasForeignKey(x         => x.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

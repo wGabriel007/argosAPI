@@ -54,10 +54,10 @@ public sealed class MonitoramentoController(
                 }),
                 stages = stages.Select(x => new
                 {
-                    id = x.Id,
                     // A tabela de controle guarda AutarquiaId, não AssociationId.
                     // Quando há uma única associação para a autarquia, conseguimos
                     // reconstruir o vínculo para manter compatibilidade com o frontend.
+                    id = x.Id,
                     associationId = associations
                         .Where(a  => a.AutarquiaId == x.AutarquiaId)
                         .Select(a => (int?)a.Id)
