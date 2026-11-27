@@ -16,7 +16,7 @@ namespace argosAPI.Controllers;
 /// Endpoints de autarquias, critérios, associações e etapas.
 /// </summary>
 [ApiController]
-[Route("")]
+[Route("api")]
 [Authorize]
 public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
 {
@@ -59,7 +59,7 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
         db.Autarquias.Add(entity);
         await db.SaveChangesAsync(ct);
 
-        return Created($"/autarquias/{entity.Id}", Agency(entity));
+        return Created($"/api/autarquias/{entity.Id}", Agency(entity));
     }
 
     [HttpPut("autarquias/{id:int}")]
@@ -146,7 +146,7 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
         db.Criterios.Add(entity);
         await db.SaveChangesAsync(ct);
 
-        return Created($"/criterios/{entity.Id}", Criterion(entity));
+        return Created($"/api/criterios/{entity.Id}", Criterion(entity));
     }
 
     [HttpPut("criterios/{id:int}")]
@@ -239,7 +239,7 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
         db.AutarquiaCriterios.Add(entity);
         await db.SaveChangesAsync(ct);
 
-        return Created($"/associacoes/{entity.Id}", Association(entity));
+        return Created($"/api/associacoes/{entity.Id}", Association(entity));
     }
 
     [HttpDelete("associacoes/{id:int}")]
@@ -301,7 +301,7 @@ public sealed class CadastrosController(ArgosDbContext db) : ControllerBase
         await db.SaveChangesAsync(ct);
 
         return Created(
-            $"/etapas/{entity.Id}",
+            $"/api/etapas/{entity.Id}",
             Stage(entity, request.AssociationId));
     }
 

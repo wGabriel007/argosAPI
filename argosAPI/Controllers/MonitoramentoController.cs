@@ -8,7 +8,7 @@ namespace argosAPI.Controllers;
 
 /// <summary>Retorna o conjunto completo usado pelo dashboard.</summary>
 [ApiController]
-[Route("monitoramento")]
+[Route("api/monitoramento")]
 [Authorize]
 public sealed class MonitoramentoController(
     ArgosDbContext db,

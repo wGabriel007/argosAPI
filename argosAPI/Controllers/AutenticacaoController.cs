@@ -15,7 +15,7 @@ namespace argosAPI.Controllers;
 /// Login e encerramento da sessão por cookie HttpOnly.
 /// </summary>
 [ApiController]
-[Route("autenticacao")]
+[Route("api/autenticacao")]
 public sealed class AutenticacaoController(ArgosDbContext db) : ControllerBase
 {
     [HttpPost("entrar")]
